@@ -19,10 +19,10 @@ mongoose.connect(uri, {
   useUnifiedTopology: true
 }); // useNewUrlParser use updated string parser on MongoDB, useCreateIndex is for dealing with a deprecated indexing system
 
-const connection = mongoose.connection;
-connection.once("open", () => {
-  console.log("MongoDB connection established successfully");
-});
+// const connection = mongoose.connection;
+// connection.once("open", () => {
+//   console.log("MongoDB connection established successfully");
+// });
 
 // Routing
 const exercisesRouter = require("./routes/exercises");
@@ -31,7 +31,14 @@ const usersRouter = require("./routes/users");
 app.use("/exercises", exercisesRouter);
 app.use("/users", usersRouter);
 
+mongoose
+  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(res => {
+    app.listen(process.env.PORT || 5000);
+    console.log(`Server is running on ${port}`);
+  })
+  .catch(err => console.log(err));
+
 // Start Server port listener
-app.listen(port, () => {
-  console.log(`Server is running on ${port}`);
-});
+// app.listen(port, () => {
+// });
